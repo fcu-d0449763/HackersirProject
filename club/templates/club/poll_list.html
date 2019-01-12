@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<p><a class="btn btn-default" href="{% url 'club_poll_list' %}">投票列表</a>
+<a class="btn btn-primary" href="{% url 'club_poll_create' %}">新增投票</a></p>
+<table class="table">
+<tr>
+<td>ID</td><td>Link</td>
+    <td>name</td>
+    <td>token</td>
+    <td>created</td>
+    <td>last_updated</td>
+    <td>context</td>
+    <td>s_date</td>
+    <td>e_date</td>
+</tr>
+{% for object in object_list %}
+<tr>
+    <td>{{object.pk}}</td>
+    <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
+    <td>{{ object.name }}</td>
+    <td>{{ object.token }}</td>
+    <td>{{ object.created }}</td>
+    <td>{{ object.last_updated }}</td>
+    <td>{{ object.context }}</td>
+    <td>{{ object.s_date }}</td>
+    <td>{{ object.e_date }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

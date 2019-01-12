@@ -1,0 +1,20 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<p><a class="btn btn-default" href="{% url 'club_category_list' %}">分類列表</a>
+    <a class="btn btn-primary" href="{% url 'club_category_update' object.pk %}">編輯分類</a></p>
+
+<table class="table">
+    <tr>
+        <td>分類名稱</td>
+        <td>{{ object.name }}</td>
+    </tr>
+
+    <tr>
+        <td>負責人</td>
+        <td>{% for user in object.user_set.all %}{{ user }}<br>{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>權限管理</td>
+        <td>{% for permission in object.permissions.all %}{{ permission }}<br>{% endfor %}</td>
+    </tr>
+</table>
+{% endblock %}

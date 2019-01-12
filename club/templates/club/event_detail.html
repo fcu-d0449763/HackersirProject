@@ -1,0 +1,44 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<p><a class="btn btn-default" href="{% url 'club_event_list' %}">Event Listing</a>
+    <a class="btn btn-primary" href="{{object.get_update_url}}">Edit Event</a></p>
+<table class="table">
+    <tr>
+        <td>name</td>
+        <td>{{ object.name }}</td>
+    </tr>
+
+
+    <tr>
+        <td>date</td>
+        <td>{{ object.date }}</td>
+    </tr>
+    <tr>
+        <td>checkcode</td>
+        <td>{{ object.checkcode }}</td>
+    </tr>
+    <tr>
+        <td>打卡紀錄</td>
+        <td>{% for i in object.checkin_events.all %}{{ i }}{% empty %}目前沒有打卡紀錄{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>相關網址</td>
+        <td>{% for i in object.url_events.all %}<a href="{{ i.link }}" target="_blank">{{ i.name }}</a>{% empty %}目前沒有相關網址{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>附檔</td>
+        <td>{% for i in object.file_events.all %}{{ i }}{% empty %}目前沒有附檔{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>相簿</td>
+        <td>{% for i in object.album_events.all %}{{ i }}{% empty %}目前沒有相簿{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>相關投票</td>
+        <td>{% for i in object.poll_events.all %}{{ i }}{% empty %}目前沒有相關投票{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>相關公告</td>
+        <td>{% for i in object.post_events.all %}{{ i }}{% empty %}目前沒有相關公告{% endfor %}</td>
+    </tr>
+</table>
+{% endblock %}

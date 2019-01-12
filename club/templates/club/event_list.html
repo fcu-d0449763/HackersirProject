@@ -1,0 +1,72 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<p><a class="btn btn-default" href="{% url 'club_event_list' %}">事件列表</a>
+    <a class="btn btn-primary" href="{% url 'club_event_create' %}">新增事件</a></p>
+{% comment %} <table class="table">
+    <tr>
+        <td>ID</td>
+        <td>Link</td>
+        <td>name</td>
+        <td>token</td>
+        <td>created</td>
+        <td>last_updated</td>
+        <td>date</td>
+        <td>checkcode</td>
+    </tr>
+    {% for object in object_list %}
+    <tr>
+        <td>{{object.pk}}</td>
+        <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
+        <td>{{ object.name }}</td>
+        <td>{{ object.token }}</td>
+        <td>{{ object.created }}</td>
+        <td>{{ object.last_updated }}</td>
+        <td>{{ object.date }}</td>
+        <td>{{ object.checkcode }}</td>
+    </tr>
+    {% endfor %}
+
+</table> {% endcomment %}
+
+
+
+
+
+
+<ul class="nav nav-tabs" role="tablist">
+
+
+    {% for object in object_list %} {% ifchanged object.category %}
+    <li class="nav-item">
+        <a class="nav-link{% if forloop.first %} active{% endif %}" data-toggle="tab" href="#{{ object.category }}">{{ object.category }}
+        </a>
+    </li>
+    {% endifchanged %} {% endfor %}
+
+</ul>
+
+<!-- Tab panes -->
+
+
+<div class="tab-content ">
+    {% for object in object_list %} {% ifchanged object.category %}
+<div id="{{ object.category }}" class="container tab-pane {% if forloop.first %} active {% endif %}">
+
+    <table class="table">
+        <tr>
+        <td>分類</td>
+        <td>日期</td>
+        <td>名稱</td>
+        <td>驗證碼</td>
+    </tr>
+    {% for i in object_list %}{% ifequal object.category i.category %}
+        <tr>
+        <td>{{ i.category }} </a></td>
+        <td>{{ i.date }}</td>
+        <td><a href="{{object.get_absolute_url}}">{{ i.name }}</a></td>
+        <td>{{ i.checkcode }}</td>
+    </tr>
+        {% endifequal %} {% endfor %}</table></div> {% endifchanged %} {% endfor %}
+
+        </div>
+
+        {% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<p><a class="btn btn-default" href="{% url 'club_checkin_list' %}">CheckIn Listing</a></p>
+<table class="table">
+<tr><td>token</td><td>{{ object.token }}</td></tr>
+<tr><td>created</td><td>{{ object.created }}</td></tr>
+<tr><td>last_updated</td><td>{{ object.last_updated }}</td></tr>
+<tr><td>nid</td><td>{{ object.nid }}</td></tr>
+</table>
+<a class="btn btn-primary" href="{{object.get_update_url}}">Edit CheckIn</a>
+
+{% endblock %}
