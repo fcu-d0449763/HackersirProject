@@ -37,6 +37,15 @@ urlpatterns += (
     url(r'^club/event/create/$', views.EventCreateView.as_view(), name='club_event_create'),
     url(r'^club/event/detail/(?P<token>[0-9a-f-]+)/$', views.EventDetailView.as_view(), name='club_event_detail'),
     url(r'^club/event/update/(?P<token>[0-9a-f-]+)/$', views.EventUpdateView.as_view(), name='club_event_update'),
+    # TODO:用來新增事件的打卡、網址、檔案、投票
+    # url(r'^club/event/(?P<token>[0-9a-f-]+)/checkin/$',  views.EventCheckInView.as_view(), name='club_event_checkin'),
+    # url(r'^club/event/(?P<token>[0-9a-f-]+)/url/$',  views.EventUrlView.as_view(), name='club_event_url'),
+    # url(r'^club/event/(?P<token>[0-9a-f-]+)/file/$',  views.EventFileInView.as_view(), name='club_event_file'),
+    # url(r'^club/event/(?P<token>[0-9a-f-]+)/poll/$',  views.EventPollInView.as_view(), name='club_event_poll'),
+
+
+
+
 )
 
 urlpatterns += (
@@ -94,6 +103,15 @@ urlpatterns += (
     url(r'^club/choice/detail/(?P<token>[0-9a-f-]+)/$', views.ChoiceDetailView.as_view(), name='club_choice_detail'),
     url(r'^club/choice/update/(?P<token>[0-9a-f-]+)/$', views.ChoiceUpdateView.as_view(), name='club_choice_update'),
 )
+
+urlpatterns += (
+    # urls for ChoiceRecord
+    url(r'^club/choicerecord/$', views.ChoiceRecordListView.as_view(), name='club_choicerecord_list'),
+    url(r'^club/choicerecord/create/$', views.ChoiceRecordCreateView.as_view(), name='club_choicerecord_create'),
+    url(r'^club/choicerecord/detail/(?P<pk>\S+)/$', views.ChoiceRecordDetailView.as_view(), name='club_choicerecord_detail'),
+    url(r'^club/choicerecord/update/(?P<pk>\S+)/$', views.ChoiceRecordUpdateView.as_view(), name='club_choicerecord_update'),
+)
+
 
 urlpatterns += (
     # urls for Post

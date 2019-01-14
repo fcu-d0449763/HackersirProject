@@ -218,8 +218,6 @@ class Choice(models.Model):
     token = models.UUIDField(db_index=True, default=uuid.uuid4)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     last_updated = models.DateTimeField(auto_now=True, editable=False)
-    context = models.TextField(max_length=100)
-    votes = models.IntegerField(default=0)
 
     # Relationship Fields
     poll = models.ForeignKey(
@@ -239,6 +237,35 @@ class Choice(models.Model):
 
     def get_update_url(self):
         return reverse('club_choice_update', args=(self.token,))
+
+class ChoiceRecord(models.Model):
+
+    # Fields
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    last_updated = models.DateTimeField(auto_now=True, editable=False)
+
+    # Relationship Fields
+    chice = models.ForeignKey(
+        Choice,
+        on_delete=models.CASCADE, related_name="choices"
+    )
+    User = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE, related_name="choicerecord_users"
+    )
+
+    class Meta:
+        ordering = ('-created',)
+
+    def __str__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('club_choicerecord_detail', args=(self.pk,))
+
+
+    def get_update_url(self):
+        return reverse('club_choicerecord_update', args=(self.pk,))
 
 
 class Post(models.Model):

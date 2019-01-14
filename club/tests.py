@@ -107,8 +107,6 @@ def create_poll(**kwargs):
 def create_choice(**kwargs):
     defaults = {}
     defaults["name"] = "name"
-    defaults["context"] = "context"
-    defaults["votes"] = "votes"
     defaults.update(**kwargs)
     if "poll" not in defaults:
         defaults["poll"] = create_poll()

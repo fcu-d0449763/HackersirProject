@@ -1,5 +1,5 @@
 from django import forms
-from .models import Event, CheckIn, Url, File, Album, AlbumImage, Poll, Choice, Post
+from .models import Event, CheckIn, Url, File, Album, AlbumImage, Poll, Choice, Post,ChoiceRecord
 from django.contrib.auth.models import Group,User
 import datetime
 import random, string
@@ -83,7 +83,7 @@ class PollForm(forms.ModelForm):
 class ChoiceForm(forms.ModelForm):
     class Meta:
         model = Choice
-        fields = ['name', 'context', 'votes', 'poll']
+        fields = ['name',  'poll']
 
 
 class PostForm(forms.ModelForm):
@@ -92,3 +92,7 @@ class PostForm(forms.ModelForm):
         fields = ['name', 'context', 'event']
 
 
+class ChoiceRecordForm(forms.ModelForm):
+    class Meta:
+        model = ChoiceRecord
+        fields = ['chice', 'User']

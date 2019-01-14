@@ -105,8 +105,7 @@ class ChoiceSerializer(serializers.ModelSerializer):
             'name', 
             'created', 
             'last_updated', 
-            'context', 
-            'votes', 
+
         )
 
 

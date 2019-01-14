@@ -1,12 +1,20 @@
 from .forms import AlbumForm, AlbumImageForm, CheckInForm, ChoiceForm, \
-    EventForm, FileForm, PollForm, PostForm, UrlForm,GroupForm
+    EventForm, FileForm, PollForm, PostForm, UrlForm,GroupForm,ChoiceRecordForm
 from .models import Album, AlbumImage, CheckIn, Choice, Event, File, Poll, \
-    Post, Url
-from django.contrib.auth.models import Group
+    Post, Url,ChoiceRecord
+from django.contrib.auth.models import Group,User
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from django.shortcuts import render,get_object_or_404, get_list_or_404, redirect
 from django.urls import reverse
 
+# TODO:所有都是登入後才能瀏覽
+# TODO:所有與Group有關都要綁 Group 新增、修改、刪除 
+# TODO:EventCheckInView
+# TODO:EventUrlView
+# TODO:EventFileInView
+# TODO:EventPollInView
+# TODO:除了evertlist 其餘列表都限定admin才能看
+# FIXME:POLL重新設計
 
 def index(request):
     return render(request, 'index.html')
@@ -41,7 +49,13 @@ class EventListView(ListView):
 class EventCreateView(CreateView):
     model = Event
     form_class = EventForm
+    
+    def get_form(self, form_class=None):
+        form = super(EventCreateView, self).get_form(form_class)
+        form.fields['category'].queryset = Group.objects.filter(user=self.request.user)
+        return form
 
+# Done:只能新增有那個Group(分類)權限的
 
 class EventDetailView(DetailView):
     model = Event
@@ -64,13 +78,24 @@ class CheckInCreateView(CreateView):
     model = CheckIn
     form_class = CheckInForm
 
+    ## TODO:打卡流程建議
     ## 如果沒有登入就直接輸入學號
     ## 如果學號跟資料庫的使用者相符
     ## USER = 找到的使用者
     ## 如果學號找不到
     ## NID = 學號 ; user = NULL
     
-
+    # def get_form(self, form_class=None):
+    #     if form_class is None:
+    #         form_class = self.get_form_class()
+    #     form = super(CheckInCreateView, self).get_form(form_class)
+    #     # the actual modification of the form
+    #     form.instance.user = self.request.user
+    #     return form
+    def get_form(self, form_class=None):
+        form = super(CheckInCreateView, self).get_form(form_class)
+        form.fields['user'].queryset = User.objects.filter(username=self.request.user.username)
+        return form
 
 class CheckInDetailView(DetailView):
     model = CheckIn
@@ -238,3 +263,20 @@ class PostUpdateView(UpdateView):
 
     def get_object(self):
         return Post.objects.filter(token=self.kwargs['token']).first()
+
+class ChoiceRecordListView(ListView):
+    model = ChoiceRecord
+
+
+class ChoiceRecordCreateView(CreateView):
+    model = ChoiceRecord
+    form_class = ChoiceRecordForm
+
+
+class ChoiceRecordDetailView(DetailView):
+    model = ChoiceRecord
+
+
+class ChoiceRecordUpdateView(UpdateView):
+    model = ChoiceRecord
+    form_class = ChoiceRecordForm

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-from .models import Event, CheckIn, Url, File, Album, AlbumImage, Poll, Choice, Post
+from .models import Event, CheckIn, Url, File, Album, AlbumImage, Poll, Choice, Post,ChoiceRecord
 
 class EventAdminForm(forms.ModelForm):
 
@@ -115,7 +115,7 @@ class ChoiceAdminForm(forms.ModelForm):
 
 class ChoiceAdmin(admin.ModelAdmin):
     form = ChoiceAdminForm
-    list_display = ['name', 'token', 'created', 'last_updated', 'context', 'votes']
+    list_display = ['name', 'token', 'created', 'last_updated']
 
 
 admin.site.register(Choice, ChoiceAdmin)
@@ -136,3 +136,16 @@ class PostAdmin(admin.ModelAdmin):
 admin.site.register(Post, PostAdmin)
 
 
+class ChoiceRecordAdminForm(forms.ModelForm):
+
+    class Meta:
+        model = ChoiceRecord
+        fields = '__all__'
+
+
+class ChoiceRecordAdmin(admin.ModelAdmin):
+    form = ChoiceRecordAdminForm
+    list_display = ['created', 'last_updated']
+    readonly_fields = ['created', 'last_updated']
+
+admin.site.register(ChoiceRecord, ChoiceRecordAdmin)

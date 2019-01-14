@@ -17,13 +17,6 @@
         <td>last_updated</td>
         <td>{{ object.last_updated }}</td>
     </tr>
-    <tr>
-        <td>context</td>
-        <td>{{ object.context }}</td>
-    </tr>
-    <tr>
-        <td>votes</td>
-        <td>{{ object.votes }}</td>
-    </tr>
+
 </table>
 <a class="btn btn-primary" href="{{object.get_update_url}}">Edit Choice</a> {% endblock %}
