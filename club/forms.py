@@ -1,9 +1,12 @@
 from django import forms
-from .models import Event, CheckIn, Url, File, Album, AlbumImage, Poll, Choice, Post,ChoiceRecord
+from .models import Event, CheckIn, Url, File, Album, AlbumImage, Poll, Choice, Post,ChoiceRecord,Category
 from django.contrib.auth.models import Group,User
 import datetime
 import random, string
+from django.forms.models import inlineformset_factory
 
+
+# 管理員 先編輯 權限名單 再去新增分類
 class GroupForm(forms.ModelForm):
     class Meta:
         model = Group
@@ -11,17 +14,9 @@ class GroupForm(forms.ModelForm):
 
     users = forms.ModelMultipleChoiceField(queryset=User.objects.all())
 
-    # Overriding __init__ here allows us to provide initial
-    # data for 'users' field
     def __init__(self, *args, **kwargs):
-        # Only in case we build the form from an instance
-        # (otherwise, 'users' list should be empty)
-        if kwargs.get('instance'):
-            # We get the 'initial' keyword argument or initialize it
-            # as a dict if it didn't exist.                
+        if kwargs.get('instance'):      
             initial = kwargs.setdefault('initial', {})
-            # The widget for a ModelMultipleChoiceField expects
-            # a list of primary key for the selected data.
             initial['users'] = [t.pk for t in kwargs['instance'].user_set.all()]
         forms.ModelForm.__init__(self, *args, **kwargs)
 
@@ -31,7 +26,10 @@ class GroupForm(forms.ModelForm):
         instance.user_set.add(*self.cleaned_data['users'])
         return instance
 
-
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = [ 'name', 'editer', 'viewer']
 
 class EventForm(forms.ModelForm):
     code = ''.join(random.choice(string.digits) for x in range(5))
@@ -51,19 +49,19 @@ class CheckInForm(forms.ModelForm):
 class UrlForm(forms.ModelForm):
     class Meta:
         model = Url
-        fields = ['name', 'token', 'link', 'event']
+        fields = ['name', 'link', 'event']
 
 
 class FileForm(forms.ModelForm):
     class Meta:
         model = File
-        fields = ['name', 'token', 'file', 'event']
+        fields = ['name',  'file', 'event']
 
 
 class AlbumForm(forms.ModelForm):
     class Meta:
         model = Album
-        fields = ['name', 'token', 'event']
+        fields = ['name',  'event']
 
 
 class AlbumImageForm(forms.ModelForm):
@@ -72,27 +70,35 @@ class AlbumImageForm(forms.ModelForm):
         fields = ['img', 'album']
 
 
-class PollForm(forms.ModelForm):
-    s_date = forms.DateField(initial=datetime.date.today)
-    e_date = forms.DateField(initial=datetime.date.today)
-    class Meta:
-        model = Poll
-        fields = ['name', 'context', 's_date', 'e_date', 'event']
-
-
 class ChoiceForm(forms.ModelForm):
     class Meta:
         model = Choice
         fields = ['name',  'poll']
+# 新增投票選項
+
+
+class PollForm(forms.ModelForm):
+    s_date = forms.DateField(initial=datetime.date.today)
+    e_date = forms.DateField(initial=datetime.date.today)
+
+    class Meta:
+        model = Poll
+        fields = ['event' , 'name', 'context', 's_date', 'e_date']
+# 新增投票
+
+ChoiceFormSet = inlineformset_factory(parent_model = Poll, model = Choice,form = ChoiceForm,  can_delete=False,extra=1, max_num=1000)
+
+
 
 
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['name', 'context', 'event']
+        fields = ['name', 'event','context']
 
 
+# event 
 class ChoiceRecordForm(forms.ModelForm):
     class Meta:
         model = ChoiceRecord
-        fields = ['chice', 'User']
+        fields = [ 'User','choice']

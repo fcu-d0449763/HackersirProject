@@ -4,6 +4,33 @@ from django.db import models
 from django.contrib.auth.models import User, Group
 import uuid
 
+class Category(models.Model):
+
+    name = models.CharField(max_length=255)
+
+    editer = models.ForeignKey(
+        Group,
+        on_delete=models.CASCADE, related_name="editer"
+    )
+
+    viewer = models.ForeignKey(
+        Group,
+        on_delete=models.CASCADE, related_name="viewer"
+    )
+
+    class Meta:
+        ordering = ('-pk',)
+
+    def __unicode__(self):
+        return u'%s' % self.name
+
+    def get_absolute_url(self):
+        return reverse('club_category_detail', args=(self.pk,))
+
+
+    def get_update_url(self):
+        return reverse('club_category_update', args=(self.pk,))
+
 class Event(models.Model):
 
     # Fields
@@ -15,10 +42,12 @@ class Event(models.Model):
     checkcode = models.CharField(max_length=5)
 
     # Relationship Fields
+
     category = models.ForeignKey(
-        Group,
-        on_delete=models.CASCADE, related_name="groups"
+        Category,
+        on_delete=models.CASCADE, related_name="categorys"
     )
+    
 
     class Meta:
         ordering = ('category','date',)
@@ -245,7 +274,7 @@ class ChoiceRecord(models.Model):
     last_updated = models.DateTimeField(auto_now=True, editable=False)
 
     # Relationship Fields
-    chice = models.ForeignKey(
+    choice = models.ForeignKey(
         Choice,
         on_delete=models.CASCADE, related_name="choices"
     )

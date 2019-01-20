@@ -34,7 +34,8 @@
     </tr>
     <tr>
         <td>相關投票</td>
-        <td>{% for i in object.poll_events.all %}{{ i }}{% empty %}目前沒有相關投票{% endfor %}</td>
+        <td><a href="{% url 'club_event_poll' object.token %}">新增投票</a>
+            {% for i in object.poll_events.all %}{{ i }}{% empty %}目前沒有相關投票{% endfor %}</td>
     </tr>
     <tr>
         <td>相關公告</td>

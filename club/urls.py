@@ -31,6 +31,14 @@ urlpatterns += (
     url(r'^club/category/update/(?P<pk>\S+)/$', views.GroupUpdateView.as_view(), name='club_category_update'),
 )
 
+# urlpatterns += (
+#     # urls for Category
+#     url(r'^club/category/$', views.CategoryListView.as_view(), name='club_category_list'),
+#     url(r'^club/category/create/$', views.CategoryCreateView.as_view(), name='club_category_create'),
+#     url(r'^club/category/detail/(?P<pk>\S+)/$', views.CategoryDetailView.as_view(), name='club_category_detail'),
+#     url(r'^club/category/update/(?P<pk>\S+)/$', views.CategoryUpdateView.as_view(), name='club_category_update'),
+# )
+
 urlpatterns += (
     # urls for Event
     url(r'^club/event/$', views.EventListView.as_view(), name='club_event_list'),
@@ -41,7 +49,8 @@ urlpatterns += (
     # url(r'^club/event/(?P<token>[0-9a-f-]+)/checkin/$',  views.EventCheckInView.as_view(), name='club_event_checkin'),
     # url(r'^club/event/(?P<token>[0-9a-f-]+)/url/$',  views.EventUrlView.as_view(), name='club_event_url'),
     # url(r'^club/event/(?P<token>[0-9a-f-]+)/file/$',  views.EventFileInView.as_view(), name='club_event_file'),
-    # url(r'^club/event/(?P<token>[0-9a-f-]+)/poll/$',  views.EventPollInView.as_view(), name='club_event_poll'),
+    url(r'^club/event/(?P<token>[0-9a-f-]+)/poll/$',  views.PollCreateView.as_view(), name='club_event_poll'),
+    url(r'^club/poll/(?P<token>[0-9a-f-]+)/choice/$',  views.ChoiceRecordCreateView.as_view(), name='club_poll_choice'),
 
 
 
@@ -91,7 +100,7 @@ urlpatterns += (
 urlpatterns += (
     # urls for Poll
     url(r'^club/poll/$', views.PollListView.as_view(), name='club_poll_list'),
-    url(r'^club/poll/create/$', views.PollCreateView.as_view(), name='club_poll_create'),
+    #url(r'^club/poll/create/$', views.PollCreateView.as_view(), name='club_poll_create'),
     url(r'^club/poll/detail/(?P<token>[0-9a-f-]+)/$', views.PollDetailView.as_view(), name='club_poll_detail'),
     url(r'^club/poll/update/(?P<token>[0-9a-f-]+)/$', views.PollUpdateView.as_view(), name='club_poll_update'),
 )
@@ -107,7 +116,7 @@ urlpatterns += (
 urlpatterns += (
     # urls for ChoiceRecord
     url(r'^club/choicerecord/$', views.ChoiceRecordListView.as_view(), name='club_choicerecord_list'),
-    url(r'^club/choicerecord/create/$', views.ChoiceRecordCreateView.as_view(), name='club_choicerecord_create'),
+    #url(r'^club/choicerecord/create/$', views.ChoiceRecordCreateView.as_view(), name='club_choicerecord_create'),
     url(r'^club/choicerecord/detail/(?P<pk>\S+)/$', views.ChoiceRecordDetailView.as_view(), name='club_choicerecord_detail'),
     url(r'^club/choicerecord/update/(?P<pk>\S+)/$', views.ChoiceRecordUpdateView.as_view(), name='club_choicerecord_update'),
 )

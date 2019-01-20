@@ -58,14 +58,18 @@
         <td>名稱</td>
         <td>驗證碼</td>
     </tr>
-    {% for i in object_list %}{% ifequal object.category i.category %}
-        <tr>
-        <td>{{ i.category }} </a></td>
-        <td>{{ i.date }}</td>
-        <td><a href="{{object.get_absolute_url}}">{{ i.name }}</a></td>
-        <td>{{ i.checkcode }}</td>
+    {% for i in object_list %}
+    
+    {% ifequal object.category i.category %}
+    <tr>
+    <td>{{ i.category }} </a></td>
+    <td>{{ i.date }}</td>
+    <td><a href="{{i.get_absolute_url}}">{{ i.name }}</a></td>
+    <td>{{ i.checkcode }}</td>
     </tr>
-        {% endifequal %} {% endfor %}</table></div> {% endifchanged %} {% endfor %}
+    {% endifequal %}
+        
+    {% endfor %}</table></div> {% endifchanged %} {% endfor %}
 
         </div>
 

@@ -1,6 +1,19 @@
 from django.contrib import admin
 from django import forms
-from .models import Event, CheckIn, Url, File, Album, AlbumImage, Poll, Choice, Post,ChoiceRecord
+from .models import Event, CheckIn, Url, File, Album, AlbumImage, Poll, Choice, Post,ChoiceRecord,Category
+
+class CategoryAdminForm(forms.ModelForm):
+
+    class Meta:
+        model = Category
+        fields = '__all__'
+
+
+class CategoryAdmin(admin.ModelAdmin):
+    form = CategoryAdminForm
+    list_display = ['name', 'editer','viewer']
+    
+admin.site.register(Category, CategoryAdmin)
 
 class EventAdminForm(forms.ModelForm):
 

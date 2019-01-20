@@ -1,3 +1,4 @@
+{% load bootstrap4 %}
 <!DOCTYPE html>
 
 <html>
@@ -51,6 +52,8 @@
     <br>
 
     <div class="container">
+            {% bootstrap_messages %}
+
         {% block content %}Replace this.{% endblock %}</div>
 
 </body>

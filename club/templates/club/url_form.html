@@ -2,7 +2,7 @@
 <p><a class="btn btn-default" href="{% url 'club_url_list' %}">Url Listing</a></p>
 <div class="row">
     <div class="col-sm-12">
-        <br> <br>
+
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %} {% bootstrap_form form %} {% buttons submit='儲存' %} {% endbuttons %}
         </form>

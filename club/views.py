@@ -1,11 +1,14 @@
 from .forms import AlbumForm, AlbumImageForm, CheckInForm, ChoiceForm, \
-    EventForm, FileForm, PollForm, PostForm, UrlForm,GroupForm,ChoiceRecordForm
+    EventForm, FileForm, PollForm, PostForm, UrlForm,GroupForm,ChoiceRecordForm,ChoiceFormSet,CategoryForm
 from .models import Album, AlbumImage, CheckIn, Choice, Event, File, Poll, \
-    Post, Url,ChoiceRecord
+    Post, Url,ChoiceRecord,Category
 from django.contrib.auth.models import Group,User
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from django.shortcuts import render,get_object_or_404, get_list_or_404, redirect
 from django.urls import reverse
+from django.contrib import messages
+from django.http import HttpResponseRedirect
+
 
 # TODO:所有都是登入後才能瀏覽
 # TODO:所有與Group有關都要綁 Group 新增、修改、刪除 
@@ -41,6 +44,29 @@ class GroupUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('club_category_detail', args=(self.object.pk,))
+
+
+class CategoryListView(ListView):
+    model = Category
+
+
+class CategoryCreateView(CreateView):
+    model = Category
+    form_class = CategoryForm
+
+
+class CategoryDetailView(DetailView):
+    model = Category
+
+
+class CategoryUpdateView(UpdateView):
+    model = Category
+    form_class = CategoryForm
+
+
+
+
+
 
 class EventListView(ListView):
     model = Event
@@ -201,11 +227,55 @@ class AlbumImageUpdateView(UpdateView):
 class PollListView(ListView):
     model = Poll
 
-
+from django import forms
 class PollCreateView(CreateView):
     model = Poll
     form_class = PollForm
 
+    # 將事件鎖定在token，並且不用選取
+    def get_form(self, form_class=None):
+        form = super(PollCreateView, self).get_form(form_class)
+        #form.fields['event'] = forms.ModelChoiceField(queryset=Event.objects.filter(token=self.kwargs['token']), initial=0)
+        #form.fields['event'].widget.attrs['readonly'] = True
+        form.fields['event'] = forms.ModelChoiceField(queryset=Event.objects.filter(token=self.kwargs['token']), initial=0,widget=forms.Select(attrs={'readonly':'True'}))
+        return form
+
+
+
+    def get_context_data(self, **kwargs):
+        context = super(PollCreateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['formset'] = ChoiceFormSet(self.request.POST, instance=self.object)
+        else:
+            context['formset'] = ChoiceFormSet(instance=self.object)
+        #context['formset'] = ChoiceFormSet(queryset=Poll.objects.none())
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        formset = context['formset']
+
+        if form.is_valid():
+            self.object = form.save()
+            if formset.is_valid():
+                formset.instance = self.object
+                formset.save()
+        return super(PollCreateView, self).form_valid(form)
+
+        #     return HttpResponseRedirect('thanks/')
+        # else :
+        #     return self.render_to_response(self.get_context_data(form = form))
+    # def post(self, request, *args, **kwargs):
+    #     formset = ChoiceFormSet(request.POST)
+    #     if formset.is_valid():
+    #         return self.form_valid(formset)
+
+    # def form_valid(self, formset):
+    #     formset.save()
+    #     return HttpResponseRedirect('/')
+
+    # def form_invalid(self, formset):
+    #     return self.render_to_response(self.get_context_data(formset=formset))
 
 class PollDetailView(DetailView):
     model = Poll
@@ -272,6 +342,29 @@ class ChoiceRecordCreateView(CreateView):
     model = ChoiceRecord
     form_class = ChoiceRecordForm
 
+    # DONE:已經投過就不能再投了
+
+    def get_error_url(self):
+        return reverse("club_poll_detail", kwargs={"token": self.kwargs['token']})
+
+    def get(self, request, *args, **kwargs):
+        poll = Poll.objects.filter(token=self.kwargs['token']).first()
+        user = User.objects.filter(username=self.request.user.username).first()
+        choice= Choice.objects.filter(poll=poll)
+        if ChoiceRecord.objects.filter(choice=choice,User=user).exists():
+            messages.warning(self.request, '已經重複投票')
+            return HttpResponseRedirect(self.get_error_url())
+        else:
+            return super(ChoiceRecordCreateView, self).get(self, request, *args, **kwargs)
+
+
+    def get_form(self, form_class=None):
+        form = super(ChoiceRecordCreateView, self).get_form(form_class)
+        form.fields['User'] = forms.ModelChoiceField(queryset=User.objects.filter(username=self.request.user.username), initial=0,widget=forms.Select(attrs={'readonly':'True'}))
+        #form.fields['user'].queryset = User.objects.filter(username=self.request.user.username)
+        poll = Poll.objects.filter(token=self.kwargs['token']).first()
+        form.fields['choice'].queryset = Choice.objects.filter(poll=poll)
+        return form
 
 class ChoiceRecordDetailView(DetailView):
     model = ChoiceRecord
