@@ -81,7 +81,7 @@ class CheckInForm(forms.ModelForm):
 class UrlForm(forms.ModelForm):
     class Meta:
         model = Url
-        fields = ["name", "link", "event"]
+        fields = ["event","name", "link"]
 
 
 class FileForm(forms.ModelForm):

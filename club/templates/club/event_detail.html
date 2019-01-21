@@ -22,7 +22,8 @@
     </tr>
     <tr>
         <td>相關網址</td>
-        <td>{% for i in object.url_events.all %}<a href="{{ i.link }}" target="_blank">{{ i.name }}</a>{% empty %}目前沒有相關網址{% endfor %}</td>
+        <td>        <a href="{% url 'club_event_url' object.token %}">新增網址</a>
+            {% for i in object.url_events.all %}<a href="{{ i.link }}" target="_blank">{{ i.name }}</a>{% empty %}目前沒有相關網址{% endfor %}</td>
     </tr>
     <tr>
         <td>附檔</td>

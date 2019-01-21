@@ -13,9 +13,10 @@ from django.http import HttpResponseRedirect
 # TODO:所有都是登入後才能瀏覽
 # TODO:所有與Group有關都要綁 Group 新增、修改、刪除 
 # TODO:EventCheckInView
-# TODO:EventUrlView
+# Done:EventUrlView
 # TODO:EventFileInView
 # TODO:EventPollInView
+# TODO:沒有Detail(url,file,albumimage,ChoiceRecord)
 # TODO:除了evertlist 其餘列表都限定admin才能看
 # FIXME:POLL重新設計
 
@@ -79,12 +80,10 @@ class EventCreateView(CreateView):
     def get_form(self, form_class=None):
         form = super(EventCreateView, self).get_form(form_class)
         #form.fields['category'].queryset = Group.objects.filter(user=self.request.user)
-        group = Group.objects.filter(user=self.request.user)
-        print(group)
-        form.fields['category'].queryset = Category.objects.filter(editer=group)
+        form.fields['category'].queryset = Category.objects.filter(editer__in=Group.objects.filter(user=self.request.user))
         return form
 
-# Done:只能新增有那個Group(分類)權限的
+# Done:只能新增有那個Group(分類)權限的(利用__in，包含很多query)
 
 class EventDetailView(DetailView):
     model = Event
@@ -147,6 +146,10 @@ class UrlCreateView(CreateView):
     model = Url
     form_class = UrlForm
 
+    def get_form(self, form_class=None):
+        form = super(UrlCreateView, self).get_form(form_class)
+        form.fields['event'] = forms.ModelChoiceField(queryset=Event.objects.filter(token=self.kwargs['token']), initial=0,widget=forms.Select(attrs={'readonly':'True'}))
+        return form
 
 class UrlDetailView(DetailView):
     model = Url

@@ -52,7 +52,7 @@ urlpatterns += (
     url(r'^club/event/update/(?P<token>[0-9a-f-]+)/$', views.EventUpdateView.as_view(), name='club_event_update'),
     # TODO:用來新增事件的打卡、網址、檔案、投票
     # url(r'^club/event/(?P<token>[0-9a-f-]+)/checkin/$',  views.EventCheckInView.as_view(), name='club_event_checkin'),
-    # url(r'^club/event/(?P<token>[0-9a-f-]+)/url/$',  views.EventUrlView.as_view(), name='club_event_url'),
+    url(r'^club/event/(?P<token>[0-9a-f-]+)/url/$',  views.UrlCreateView.as_view(), name='club_event_url'),
     # url(r'^club/event/(?P<token>[0-9a-f-]+)/file/$',  views.EventFileInView.as_view(), name='club_event_file'),
     url(r'^club/event/(?P<token>[0-9a-f-]+)/poll/$',  views.PollCreateView.as_view(), name='club_event_poll'),
     url(r'^club/poll/(?P<token>[0-9a-f-]+)/choice/$',  views.ChoiceRecordCreateView.as_view(), name='club_poll_choice'),
@@ -73,7 +73,7 @@ urlpatterns += (
 urlpatterns += (
     # urls for Url
     url(r'^club/url/$', views.UrlListView.as_view(), name='club_url_list'),
-    url(r'^club/url/create/$', views.UrlCreateView.as_view(), name='club_url_create'),
+    #url(r'^club/url/create/$', views.UrlCreateView.as_view(), name='club_url_create'),
     url(r'^club/url/detail/(?P<token>[0-9a-f-]+)/$', views.UrlDetailView.as_view(), name='club_url_detail'),
     url(r'^club/url/update/(?P<token>[0-9a-f-]+)/$', views.UrlUpdateView.as_view(), name='club_url_update'),
 )
