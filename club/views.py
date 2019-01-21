@@ -32,7 +32,7 @@ class GroupCreateView(CreateView):
 
     # 新增分類後，轉跳到分類列表
     def get_success_url(self):
-        return reverse('club_category_list')
+        return reverse('club_permissions_list')
 
 class GroupDetailView(DetailView):
     model = Group
@@ -43,7 +43,7 @@ class GroupUpdateView(UpdateView):
     form_class = GroupForm
 
     def get_success_url(self):
-        return reverse('club_category_detail', args=(self.object.pk,))
+        return reverse('club_permissions_detail', args=(self.object.pk,))
 
 
 class CategoryListView(ListView):
@@ -78,7 +78,10 @@ class EventCreateView(CreateView):
     
     def get_form(self, form_class=None):
         form = super(EventCreateView, self).get_form(form_class)
-        form.fields['category'].queryset = Group.objects.filter(user=self.request.user)
+        #form.fields['category'].queryset = Group.objects.filter(user=self.request.user)
+        group = Group.objects.filter(user=self.request.user)
+        print(group)
+        form.fields['category'].queryset = Category.objects.filter(editer=group)
         return form
 
 # Done:只能新增有那個Group(分類)權限的

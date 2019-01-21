@@ -1,21 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<p><a class="btn btn-default" href="{% url 'club_poll_list' %}">Poll Listing</a></p>
+<p><a class="btn btn-default" href="{% url 'club_category_list' %}">Category Listing</a></p>
 <table class="table">
 <tr><td>name</td><td>{{ object.name }}</td></tr>
-<tr><td>token</td><td>{{ object.token }}</td></tr>
-<tr><td>created</td><td>{{ object.created }}</td></tr>
-<tr><td>last_updated</td><td>{{ object.last_updated }}</td></tr>
-<tr><td>context</td><td>{{ object.context }}</td></tr>
-<tr><td>s_date</td><td>{{ object.s_date }}</td></tr>
-<tr><td>e_date</td><td>{{ object.e_date }}</td></tr>
-<tr>
-        <td>相關選項</td>
-        <td>{% for i in object.polls.all %}{{ i }}{% empty %}目前沒有相關選項{% endfor %}<br>
-            <a class="btn btn-default" href="{% url 'club_poll_choice' object.token %}">開始投票</a></td>
-    </tr>
 </table>
-<a class="btn btn-primary" href="{{object.get_update_url}}">Edit Poll</a>
+<a class="btn btn-primary" href="{{object.get_update_url}}">Edit Category</a>
 
 {% endblock %}

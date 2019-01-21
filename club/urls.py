@@ -4,7 +4,10 @@ from django.conf.urls import url, include
 # from . import api
 from . import views
 
+from django.views.i18n import JavaScriptCatalog
 
+urlpatterns = [
+]
 # router = routers.DefaultRouter()
 # router.register(r'event', api.EventViewSet)
 # router.register(r'checkin', api.CheckInViewSet)
@@ -21,23 +24,25 @@ urlpatterns = (
     # urls for Django Rest Framework API
     # url(r'^api/v1/', include(router.urls)),
     url(r'^$', views.index , name='index'),
+    url(r'^jsi18n/$', JavaScriptCatalog.as_view(), name='javascript-catalog'),
+
 )
 
 urlpatterns += (
     # urls for Group(Category)
-    url(r'^club/category/$', views.GroupListView.as_view(), name='club_category_list'),
-    url(r'^club/category/create/$', views.GroupCreateView.as_view(), name='club_category_create'),
-    url(r'^club/category/detail/(?P<pk>\S+)/$', views.GroupDetailView.as_view(), name='club_category_detail'),
-    url(r'^club/category/update/(?P<pk>\S+)/$', views.GroupUpdateView.as_view(), name='club_category_update'),
+    url(r'^club/permissions/$', views.GroupListView.as_view(), name='club_permissions_list'),
+    url(r'^club/permissions/create/$', views.GroupCreateView.as_view(), name='club_permissions_create'),
+    url(r'^club/permissions/detail/(?P<pk>\S+)/$', views.GroupDetailView.as_view(), name='club_permissions_detail'),
+    url(r'^club/permissions/update/(?P<pk>\S+)/$', views.GroupUpdateView.as_view(), name='club_permissions_update'),
 )
 
-# urlpatterns += (
-#     # urls for Category
-#     url(r'^club/category/$', views.CategoryListView.as_view(), name='club_category_list'),
-#     url(r'^club/category/create/$', views.CategoryCreateView.as_view(), name='club_category_create'),
-#     url(r'^club/category/detail/(?P<pk>\S+)/$', views.CategoryDetailView.as_view(), name='club_category_detail'),
-#     url(r'^club/category/update/(?P<pk>\S+)/$', views.CategoryUpdateView.as_view(), name='club_category_update'),
-# )
+urlpatterns += (
+    # urls for Category
+    url(r'^club/category/$', views.CategoryListView.as_view(), name='club_category_list'),
+    url(r'^club/category/create/$', views.CategoryCreateView.as_view(), name='club_category_create'),
+    url(r'^club/category/detail/(?P<pk>\S+)/$', views.CategoryDetailView.as_view(), name='club_category_detail'),
+    url(r'^club/category/update/(?P<pk>\S+)/$', views.CategoryUpdateView.as_view(), name='club_category_update'),
+)
 
 urlpatterns += (
     # urls for Event

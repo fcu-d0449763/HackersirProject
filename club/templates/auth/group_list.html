@@ -1,15 +1,15 @@
 {% extends "base.html" %} {% load static %} {% block content %}
-<p><a class="btn btn-default" href="{% url 'club_category_list' %}">分類列表</a>
-    <a class="btn btn-primary" href="{% url 'club_category_create' %}">新增分類</a></p>
+<p><a class="btn btn-default" href="{% url 'club_permissions_list' %}">權限名單列表</a>
+    <a class="btn btn-primary" href="{% url 'club_permissions_create' %}">新增權限名單</a></p>
 <table class="table">
     <tr>
         <td>ID</td>
-        <td>分類名稱</td>
+        <td>權限名單名稱</td>
     </tr>
     {% for object in object_list %}
     <tr>
         <td>{{object.pk}}</td>
-        <td><a href="{% url 'club_category_detail' object.pk %}">{{ object.name }}</a></td>
+        <td><a href="{% url 'club_permissions_detail' object.pk %}">{{ object.name }}</a></td>
     </tr>
     {% endfor %}
 </table> {% endblock %}d

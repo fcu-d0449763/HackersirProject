@@ -1,10 +1,10 @@
 {% extends "base.html" %} {% load static %} {% block content %}
-<p><a class="btn btn-default" href="{% url 'club_category_list' %}">分類列表</a>
-    <a class="btn btn-primary" href="{% url 'club_category_update' object.pk %}">編輯分類</a></p>
+<p><a class="btn btn-default" href="{% url 'club_permissions_list' %}">權限名單列表</a>
+    <a class="btn btn-primary" href="{% url 'club_permissions_update' object.pk %}">編輯權限名單</a></p>
 
 <table class="table">
     <tr>
-        <td>分類名稱</td>
+        <td>權限名單名稱</td>
         <td>{{ object.name }}</td>
     </tr>
 

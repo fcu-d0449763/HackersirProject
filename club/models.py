@@ -21,7 +21,7 @@ class Category(models.Model):
     class Meta:
         ordering = ('-pk',)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.name
 
     def get_absolute_url(self):

@@ -1,40 +1,12 @@
 {% extends "base.html" %}{% load bootstrap4 %} {% load fontawesome %} {% load static %} {% block content %}
-
-
-<p><a class="btn btn-default" href="{% url 'club_poll_list' %}">Poll Listing</a></p>
+<p><a class="btn btn-default" href="{% url 'club_choice_list' %}">Choice Listing</a></p>
 <div class="row">
     <div class="col-sm-12">
 
         <form method="post" enctype="multipart/form-data">
-            {% csrf_token %} {% bootstrap_form form %} 
-            {{ form.media }}
-            <legend>選項</legend>
-            <fieldset>
-                
-                
-                <!-- {{ formset }} -->
-
-                <!-- {% bootstrap_form formset.management_form %}  -->
-                {{ formset.management_form }}
-                       {{ formset.non_form_errors }}
-                       {% for form in formset %}
-                               <div class="formset_row" >{% bootstrap_form form %}</div>
-                     {% endfor %}
-               
-
-            </fieldset>
-            {% buttons submit='儲存' %} {% endbuttons %}
-
+            {% csrf_token %} {% bootstrap_form form %} {% buttons submit='儲存' %} {% endbuttons %}
         </form>
+        {{ form.media }}
     </div>
 </div>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="{% static 'js/jquery.formset.js' %}"></script>
-<script type="text/javascript">
-    $('.formset_row').formset({
-        addText: '新增投票選項',
-        deleteText: '移除此選項',
-        prefix: 'formset'
-    });
-</script>
 {% endblock %}
