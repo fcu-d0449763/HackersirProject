@@ -8,7 +8,7 @@ from django.shortcuts import render,get_object_or_404, get_list_or_404, redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-
+from django import forms
 
 # TODO:所有都是登入後才能瀏覽
 # TODO:所有與Group有關都要綁 Group 新增、修改、刪除 
@@ -233,7 +233,7 @@ class AlbumImageUpdateView(UpdateView):
 class PollListView(ListView):
     model = Poll
 
-from django import forms
+
 class PollCreateView(CreateView):
     model = Poll
     form_class = PollForm

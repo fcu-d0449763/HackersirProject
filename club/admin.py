@@ -162,3 +162,5 @@ class ChoiceRecordAdmin(admin.ModelAdmin):
     readonly_fields = ['created', 'last_updated']
 
 admin.site.register(ChoiceRecord, ChoiceRecordAdmin)
+
+
